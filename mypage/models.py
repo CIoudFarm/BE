@@ -16,7 +16,8 @@ class Instance(models.Model):
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
     start_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
-    base_config = models.FileField(upload_to='base_configs/', null=True, blank=True)
+    base_config = models.BinaryField(null=True, blank=True)
+    base_config_name = models.CharField(max_length=255, null=True, blank=True)
     region = models.CharField(max_length=100, blank=True)
 
     def __str__(self):

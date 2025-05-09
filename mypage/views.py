@@ -5,15 +5,25 @@ from datetime import date
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status as drf_status
+from django.http import HttpResponse
 
 class InstanceSerializer(serializers.ModelSerializer):
+    base_config = serializers.FileField(write_only=True, required=False)
     class Meta:
         model = Instance
-        fields = ['id', 'name', 'type', 'region', 'start_date', 'status', 'base_config']
-        read_only_fields = ['start_date', 'status']
+        fields = ['id', 'name', 'type', 'region', 'start_date', 'status', 'base_config', 'base_config_name']
+        read_only_fields = ['start_date', 'status', 'base_config_name']
 
     def create(self, validated_data):
-        # start_date는 오늘 날짜, status는 '시작'으로 자동 저장
+        # 파일 처리
+        uploaded_file = self.context['request'].FILES.get('base_config')
+        if uploaded_file:
+            validated_data['base_config'] = uploaded_file.read()
+            validated_data['base_config_name'] = uploaded_file.name
+        else:
+            validated_data['base_config'] = None
+            validated_data['base_config_name'] = None
+        # start_date/status 자동 저장
         validated_data['start_date'] = date.today()
         validated_data['status'] = '시작'
         return super().create(validated_data)
@@ -37,3 +47,13 @@ class InstanceStatusUpdateView(APIView):
 class InstanceDetailView(generics.DestroyAPIView):
     queryset = Instance.objects.all()
     serializer_class = InstanceSerializer
+
+class InstanceFileDownloadView(APIView):
+    def get(self, request, pk):
+        instance = get_object_or_404(Instance, pk=pk)
+        if not instance.base_config:
+            return Response({'detail': 'No file found.'}, status=drf_status.HTTP_404_NOT_FOUND)
+        response = HttpResponse(instance.base_config, content_type='application/octet-stream')
+        filename = instance.base_config_name or 'downloaded_file.json'
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
