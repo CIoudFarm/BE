@@ -1,12 +1,17 @@
+# farm/es/index_initializer.py
+
 import requests
 
 def create_crop_index():
     index_name = "crops"
     url = f"http://localhost:9200/{index_name}"
 
-    # 이미 존재하면 생략
+    # 기존 인덱스가 존재하면 삭제
     if requests.head(url).status_code == 200:
-        return
+        print("⚠️ 기존 인덱스 삭제 중...")
+        delete_response = requests.delete(url)
+        delete_response.raise_for_status()
+        print("🗑️ 기존 인덱스 삭제 완료")
 
     mapping = {
         "settings": {
@@ -21,13 +26,35 @@ def create_crop_index():
         },
         "mappings": {
             "properties": {
-                "crop_type": {"type": "text"},
-                "growing_period": {"type": "text"},
-                "budget": {"type": "text"},
-                "notes": {"type": "text", "analyzer": "korean_nori"}
+                "crop_type": {
+                    "type": "text",
+                    "analyzer": "korean_nori"
+                },
+                "growing_period": {
+                    "type": "integer"
+                },
+                "budget": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "text",
+                    "analyzer": "korean_nori"
+                },
+                "url": {
+                    "type": "keyword"
+                },
+                "setting_file": {
+                    "type": "text"
+                }
             }
         }
     }
 
-    response = requests.put(url, json=mapping)
-    response.raise_for_status()
+    try:
+        response = requests.put(url, json=mapping)
+        response.raise_for_status()
+        print("✅ Elasticsearch 'crops' 인덱스 생성 완료")
+    except Exception as e:
+        print("❌ Elasticsearch 인덱스 생성 실패:", e)
+        print("응답 내용:", response.text)
+        raise

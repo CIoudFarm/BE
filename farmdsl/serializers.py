@@ -1,7 +1,9 @@
 from rest_framework import serializers
 
 class CropSearchSerializer(serializers.Serializer):
-    crop_type = serializers.CharField()
-    growing_period = serializers.CharField()
-    budget = serializers.CharField()
-    notes = serializers.CharField()
+    crop_type = serializers.CharField(required=False, allow_blank=True)
+    growing_period = serializers.IntegerField(required=False)
+    budget = serializers.IntegerField(required=False)
+    notes = serializers.CharField(required=False, allow_blank=True)
+    url = serializers.URLField(required=False, allow_blank=True)
+    setting_file = serializers.JSONField(required=False)
