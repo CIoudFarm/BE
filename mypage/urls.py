@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import InstanceListView, InstanceStatusUpdateView, InstanceDetailView, InstanceFileDownloadView
+from mypage.views import InstanceListView, InstanceStatusUpdateView, InstanceDetailView, InstanceFileDownloadView
 
 urlpatterns = [
     path('instances/', InstanceListView.as_view(), name='instance-list'),

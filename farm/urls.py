@@ -10,10 +10,9 @@ router.register(r"crops", CropSearchViewSet, basename="crops")
 router.register(r'containers', ContainerViewSet)
 
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include(router.urls)),
     path("mypage/", include("mypage.urls")),
+    path("", include(router.urls)),
 ]
 
