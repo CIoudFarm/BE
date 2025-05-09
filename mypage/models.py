@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class Instance(models.Model):
     TYPE_CHOICES = [
@@ -12,13 +11,14 @@ class Instance(models.Model):
         ("시작", "시작"),
         ("중지됨", "중지됨"),
     ]
-    name = models.CharField(max_length=50)
-    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+
+    name = models.CharField(max_length=50, null=True, blank=True)
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True)
     base_config = models.BinaryField(null=True, blank=True)
     base_config_name = models.CharField(max_length=255, null=True, blank=True)
-    region = models.CharField(max_length=100, blank=True)
+    region = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.name or ""
