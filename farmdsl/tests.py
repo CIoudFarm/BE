@@ -27,10 +27,11 @@ class CropSearchViewSetTest(APITestCase):
                 },
                 "mappings": {
                     "properties": {
-                        "crop_type": {"type": "text"},
+                        "crop_type": {"type": "text", "analyzer": "korean_nori"},
                         "growing_period": {"type": "integer"},
                         "budget": {"type": "integer"},
                         "notes": {"type": "text", "analyzer": "korean_nori"},
+                        "container": {"type": "text"},  # ✅ 추가됨
                     }
                 }
             }
@@ -48,7 +49,8 @@ class CropSearchViewSetTest(APITestCase):
             "crop_type": "토마토",
             "growing_period": 3,
             "budget": 500000,
-            "notes": "물 많이 줘야 함"
+            "notes": "물 많이 줘야 함",
+            "container": "79295b05-b273-402c-9742-0d5587df3649"
         }
         response1 = self.client.post(index_url, data=payload1, format="json")
         print("\n✅ [CREATE] POST", index_url)
