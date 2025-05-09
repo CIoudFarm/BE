@@ -2,41 +2,172 @@
   "name": "로봇 순찰 포함형",
   "description": "베드 사이를 순찰하는 로봇 포함 구성",
   "hardware": {
-    "layers": 2,
-    "beds_per_layer": 5,
+    "layers": 4,
+    "beds_per_layer": 6,
     "sensors": [
       {
         "type": "temperature",
-        "x": 0.25,
-        "y": 0.14,
-        "layer": 1
+        "count": 2,
+        "positions": [
+          {
+            "layer": 2,
+            "x": 0.22,
+            "y": 0.46
+          },
+          {
+            "layer": 1,
+            "x": 0.23,
+            "y": 0.76
+          }
+        ]
       },
       {
         "type": "humidity",
-        "x": 0.9,
-        "y": 0.16,
-        "layer": 2
+        "count": 3,
+        "positions": [
+          {
+            "layer": 2,
+            "x": 0.8,
+            "y": 0.26
+          },
+          {
+            "layer": 1,
+            "x": 0.72,
+            "y": 0.81
+          },
+          {
+            "layer": 3,
+            "x": 0.11,
+            "y": 0.28
+          }
+        ]
       }
     ],
     "actuators": [
       {
-        "type": "led",
-        "x": 0.29,
-        "y": 0.12,
-        "layer": 2
+        "type": "fan",
+        "positions": [
+          {
+            "layer": 4,
+            "x": 0.3,
+            "y": 0.73,
+            "control": {
+              "mode": "manual",
+              "options": [
+                {
+                  "label": "끄기",
+                  "value": 0
+                },
+                {
+                  "label": "약풍",
+                  "value": 30
+                },
+                {
+                  "label": "중풍",
+                  "value": 60
+                },
+                {
+                  "label": "강풍",
+                  "value": 100
+                }
+              ],
+              "default": 0
+            }
+          },
+          {
+            "layer": 3,
+            "x": 0.2,
+            "y": 0.43,
+            "control": {
+              "mode": "manual",
+              "options": [
+                {
+                  "label": "끄기",
+                  "value": 0
+                },
+                {
+                  "label": "약풍",
+                  "value": 30
+                },
+                {
+                  "label": "중풍",
+                  "value": 60
+                },
+                {
+                  "label": "강풍",
+                  "value": 100
+                }
+              ],
+              "default": 0
+            }
+          }
+        ]
       },
       {
-        "type": "fan",
-        "x": 0.13,
-        "y": 0.77,
-        "layer": 2
+        "type": "LED",
+        "positions": [
+          {
+            "layer": 3,
+            "x": 0.36,
+            "y": 0.27,
+            "control": {
+              "mode": "manual",
+              "options": [
+                {
+                  "label": "끄기",
+                  "value": 0
+                },
+                {
+                  "label": "30%",
+                  "value": 30
+                },
+                {
+                  "label": "70%",
+                  "value": 70
+                },
+                {
+                  "label": "100%",
+                  "value": 100
+                }
+              ],
+              "default": 70
+            }
+          },
+          {
+            "layer": 4,
+            "x": 0.8,
+            "y": 0.8,
+            "control": {
+              "mode": "manual",
+              "options": [
+                {
+                  "label": "끄기",
+                  "value": 0
+                },
+                {
+                  "label": "30%",
+                  "value": 30
+                },
+                {
+                  "label": "70%",
+                  "value": 70
+                },
+                {
+                  "label": "100%",
+                  "value": 100
+                }
+              ],
+              "default": 70
+            }
+          }
+        ]
       }
     ]
   },
   "dimensions": {
-    "width": "10m",
+    "width": "14m",
     "length": "10m",
-    "height": "3m"
+    "height": "4m"
   },
   "plants": [
     {
@@ -48,32 +179,32 @@
       "maxHumidity": 80,
       "positions": [
         {
-          "x": 0.79,
-          "y": 0.2,
+          "x": 0.78,
+          "y": 0.28,
           "layer": 1
         },
         {
-          "x": 0.46,
-          "y": 0.37,
+          "x": 0.36,
+          "y": 0.33,
           "layer": 1
         },
         {
-          "x": 0.67,
-          "y": 0.63,
+          "x": 0.38,
+          "y": 0.79,
           "layer": 1
         },
         {
-          "x": 0.17,
-          "y": 0.3,
+          "x": 0.52,
+          "y": 0.83,
           "layer": 2
         },
         {
-          "x": 0.44,
-          "y": 0.46,
+          "x": 0.4,
+          "y": 0.17,
           "layer": 2
         }
       ],
-      "growthStage": 63
+      "growthStage": 84
     },
     {
       "type": "lettuce",
@@ -84,32 +215,32 @@
       "maxHumidity": 85,
       "positions": [
         {
-          "x": 0.13,
-          "y": 0.54,
+          "x": 0.44,
+          "y": 0.6,
           "layer": 1
         },
         {
-          "x": 0.23,
-          "y": 0.73,
+          "x": 0.54,
+          "y": 0.51,
           "layer": 1
         },
         {
-          "x": 0.69,
-          "y": 0.64,
+          "x": 0.38,
+          "y": 0.47,
           "layer": 1
         },
         {
-          "x": 0.76,
-          "y": 0.26,
+          "x": 0.66,
+          "y": 0.42,
           "layer": 2
         },
         {
-          "x": 0.68,
-          "y": 0.35,
+          "x": 0.62,
+          "y": 0.89,
           "layer": 2
         }
       ],
-      "growthStage": 85
+      "growthStage": 76
     },
     {
       "type": "pepper",
@@ -120,28 +251,28 @@
       "maxHumidity": 75,
       "positions": [
         {
-          "x": 0.61,
+          "x": 0.5,
           "y": 0.77,
           "layer": 1
         },
         {
-          "x": 0.74,
-          "y": 0.33,
+          "x": 0.36,
+          "y": 0.71,
+          "layer": 1
+        },
+        {
+          "x": 0.48,
+          "y": 0.89,
           "layer": 1
         },
         {
           "x": 0.42,
-          "y": 0.5,
-          "layer": 1
-        },
-        {
-          "x": 0.77,
-          "y": 0.61,
+          "y": 0.73,
           "layer": 2
         },
         {
-          "x": 0.38,
-          "y": 0.17,
+          "x": 0.85,
+          "y": 0.33,
           "layer": 2
         }
       ],

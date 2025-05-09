@@ -2,41 +2,167 @@
   "name": "수직농장 3층",
   "description": "3개 층으로 구성된 수직농장 구조 설정",
   "hardware": {
-    "layers": 2,
-    "beds_per_layer": 5,
+    "layers": 4,
+    "beds_per_layer": 6,
     "sensors": [
       {
         "type": "temperature",
-        "x": 0.17,
-        "y": 0.35,
-        "layer": 2
+        "count": 3,
+        "positions": [
+          {
+            "layer": 3,
+            "x": 0.17,
+            "y": 0.36
+          },
+          {
+            "layer": 2,
+            "x": 0.63,
+            "y": 0.13
+          },
+          {
+            "layer": 1,
+            "x": 0.54,
+            "y": 0.75
+          }
+        ]
       },
       {
         "type": "humidity",
-        "x": 0.24,
-        "y": 0.6,
-        "layer": 1
+        "count": 1,
+        "positions": [
+          {
+            "layer": 3,
+            "x": 0.77,
+            "y": 0.14
+          }
+        ]
       }
     ],
     "actuators": [
       {
-        "type": "led",
-        "x": 0.32,
-        "y": 0.23,
-        "layer": 1
+        "type": "fan",
+        "positions": [
+          {
+            "layer": 2,
+            "x": 0.22,
+            "y": 0.83,
+            "control": {
+              "mode": "manual",
+              "options": [
+                {
+                  "label": "끄기",
+                  "value": 0
+                },
+                {
+                  "label": "약풍",
+                  "value": 30
+                },
+                {
+                  "label": "중풍",
+                  "value": 60
+                },
+                {
+                  "label": "강풍",
+                  "value": 100
+                }
+              ],
+              "default": 0
+            }
+          },
+          {
+            "layer": 1,
+            "x": 0.44,
+            "y": 0.4,
+            "control": {
+              "mode": "manual",
+              "options": [
+                {
+                  "label": "끄기",
+                  "value": 0
+                },
+                {
+                  "label": "약풍",
+                  "value": 30
+                },
+                {
+                  "label": "중풍",
+                  "value": 60
+                },
+                {
+                  "label": "강풍",
+                  "value": 100
+                }
+              ],
+              "default": 0
+            }
+          }
+        ]
       },
       {
-        "type": "fan",
-        "x": 0.78,
-        "y": 0.65,
-        "layer": 2
+        "type": "LED",
+        "positions": [
+          {
+            "layer": 4,
+            "x": 0.11,
+            "y": 0.48,
+            "control": {
+              "mode": "manual",
+              "options": [
+                {
+                  "label": "끄기",
+                  "value": 0
+                },
+                {
+                  "label": "30%",
+                  "value": 30
+                },
+                {
+                  "label": "70%",
+                  "value": 70
+                },
+                {
+                  "label": "100%",
+                  "value": 100
+                }
+              ],
+              "default": 70
+            }
+          },
+          {
+            "layer": 2,
+            "x": 0.26,
+            "y": 0.38,
+            "control": {
+              "mode": "manual",
+              "options": [
+                {
+                  "label": "끄기",
+                  "value": 0
+                },
+                {
+                  "label": "30%",
+                  "value": 30
+                },
+                {
+                  "label": "70%",
+                  "value": 70
+                },
+                {
+                  "label": "100%",
+                  "value": 100
+                }
+              ],
+              "default": 70
+            }
+          }
+        ]
       }
     ]
   },
   "dimensions": {
-    "width": "10m",
+    "width": "14m",
     "length": "10m",
-    "height": "3m"
+    "height": "4m"
   },
   "plants": [
     {
@@ -48,32 +174,32 @@
       "maxHumidity": 80,
       "positions": [
         {
-          "x": 0.56,
-          "y": 0.87,
-          "layer": 1
-        },
-        {
-          "x": 0.61,
-          "y": 0.53,
-          "layer": 1
-        },
-        {
-          "x": 0.38,
+          "x": 0.59,
           "y": 0.35,
           "layer": 1
         },
         {
-          "x": 0.83,
-          "y": 0.38,
+          "x": 0.62,
+          "y": 0.59,
+          "layer": 1
+        },
+        {
+          "x": 0.2,
+          "y": 0.51,
+          "layer": 1
+        },
+        {
+          "x": 0.64,
+          "y": 0.63,
           "layer": 2
         },
         {
-          "x": 0.28,
-          "y": 0.12,
+          "x": 0.48,
+          "y": 0.53,
           "layer": 2
         }
       ],
-      "growthStage": 77
+      "growthStage": 73
     },
     {
       "type": "lettuce",
@@ -84,32 +210,32 @@
       "maxHumidity": 85,
       "positions": [
         {
-          "x": 0.65,
-          "y": 0.13,
+          "x": 0.88,
+          "y": 0.4,
           "layer": 1
         },
         {
-          "x": 0.66,
-          "y": 0.87,
+          "x": 0.58,
+          "y": 0.85,
           "layer": 1
         },
         {
-          "x": 0.17,
-          "y": 0.11,
+          "x": 0.26,
+          "y": 0.47,
           "layer": 1
         },
         {
-          "x": 0.52,
-          "y": 0.32,
+          "x": 0.54,
+          "y": 0.66,
           "layer": 2
         },
         {
-          "x": 0.29,
-          "y": 0.76,
+          "x": 0.2,
+          "y": 0.45,
           "layer": 2
         }
       ],
-      "growthStage": 70
+      "growthStage": 85
     },
     {
       "type": "pepper",
@@ -120,32 +246,32 @@
       "maxHumidity": 75,
       "positions": [
         {
-          "x": 0.27,
-          "y": 0.72,
-          "layer": 1
-        },
-        {
-          "x": 0.25,
-          "y": 0.29,
-          "layer": 1
-        },
-        {
           "x": 0.18,
-          "y": 0.54,
+          "y": 0.62,
           "layer": 1
         },
         {
-          "x": 0.7,
-          "y": 0.41,
+          "x": 0.31,
+          "y": 0.22,
+          "layer": 1
+        },
+        {
+          "x": 0.38,
+          "y": 0.51,
+          "layer": 1
+        },
+        {
+          "x": 0.17,
+          "y": 0.18,
           "layer": 2
         },
         {
-          "x": 0.76,
-          "y": 0.28,
+          "x": 0.36,
+          "y": 0.46,
           "layer": 2
         }
       ],
-      "growthStage": 74
+      "growthStage": 69
     }
   ]
 }
