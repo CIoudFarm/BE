@@ -5,4 +5,4 @@ class CropSearchSerializer(serializers.Serializer):
     growing_period = serializers.IntegerField(required=False)
     budget = serializers.IntegerField(required=False)
     notes = serializers.CharField(required=False, allow_blank=True)
-    container = serializers.JSONField(required=False)
+    container = serializers.CharField(required=False, allow_blank=True)

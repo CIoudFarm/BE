@@ -118,21 +118,18 @@ class CropSearchViewSet(viewsets.ViewSet):
                 }
             }
 
-        # 1차: notes 포함 검색
+        # 🔸 1차 검색: notes 포함
         query_with_notes = build_query(include_notes=True)
         result = es.search(index=self.index_name, body=query_with_notes)
         hits = result["hits"]["hits"]
 
-        # 2차: 결과가 없고 notes 있었을 경우 → notes 제외하고 재검색
+        # 🔸 2차 fallback: notes 제외하고 재검색
         if not hits and notes:
             query_without_notes = build_query(include_notes=False)
             result = es.search(index=self.index_name, body=query_without_notes)
             hits = result["hits"]["hits"]
 
         final_hits = [hit["_source"] | {"id": hit["_id"]} for hit in hits]
-
-        if not final_hits:
-            return Response({"count": 0, "results": []}, status=status.HTTP_200_OK)
 
         return Response({
             "count": len(final_hits),
