@@ -8,7 +8,7 @@ from mypage.models import Instance
 from container.models import Container
 
 
-CONFIG_DIR = Path("farms/files")
+CONFIG_DIR = Path("farm/files")
 
 FILES = [
     ("온실 표준형", "base_config_greenhouse_std.json", "기본 온도/습도 센서와 LED, 팬으로 구성된 표준 온실 환경입니다."),
