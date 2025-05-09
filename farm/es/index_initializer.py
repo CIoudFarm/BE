@@ -16,39 +16,45 @@ def create_crop_index():
     mapping = {
         "settings": {
             "analysis": {
-                "analyzer": {
-                    "korean_nori": {
-                        "type": "custom",
-                        "tokenizer": "nori_tokenizer"
-                    }
+            "analyzer": {
+                "korean_nori": {
+                "type": "custom",
+                "tokenizer": "nori_tokenizer"
                 }
+            }
             }
         },
         "mappings": {
             "properties": {
-                "crop_type": {
-                    "type": "text",
-                    "analyzer": "korean_nori"
-                },
-                "growing_period": {
-                    "type": "integer"
-                },
-                "budget": {
-                    "type": "integer"
-                },
-                "notes": {
-                    "type": "text",
-                    "analyzer": "korean_nori"
-                },
-                "url": {
-                    "type": "keyword"
-                },
-                "setting_file": {
+            "crop_type": {
+                "type": "text",
+                "analyzer": "korean_nori"
+            },
+            "growing_period": {
+                "type": "integer"
+            },
+            "budget": {
+                "type": "integer"
+            },
+            "notes": {
+                "type": "text",
+                "analyzer": "korean_nori"
+            },
+            "url": {
+                "type": "keyword"
+            },
+            "setting_file": {
+                "type": "object",
+                "properties": {
+                "setting": {
                     "type": "text"
                 }
+                }
+            }
             }
         }
-    }
+        }
+
 
     try:
         response = requests.put(url, json=mapping)
