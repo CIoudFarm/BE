@@ -21,6 +21,7 @@ class Container(models.Model):
 
     functions = models.JSONField(default=default_functions) # 리스트[str] 저장용 (SQLite에서는 JSONField 사용 가능 in Django 3.1+)
     setting_file = models.JSONField(default=dict)  # 복잡한 설정 저장
+    notes = models.CharField(max_length=1600, default='')
 
     added_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -37,9 +38,9 @@ class Container(models.Model):
             # ✅ Elasticsearch 색인: container만 포함
             try:
                 es.index(index="crops", body={
-                    "container": str(self.pk)
+                    "container": str(self.pk),
+                    "notes": self.notes,
                 })
-                print(f"✅ Elasticsearch 색인 완료: container={self.pk}")
             except Exception as e:
                 print(f"❌ Elasticsearch 색인 실패: {e}")
 
