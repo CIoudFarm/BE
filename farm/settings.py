@@ -138,5 +138,8 @@ ELASTICSEARCH_DSL = {
     },
 }
 
-
-CORS_ALLOW_ALL_ORIGINS = True 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",      # React, Next.js dev server
+    "http://127.0.0.1:3000",      # 다른 로컬호스트 주소
+    "http://localhost:8000",      # 혹시 Django 프론트도 쓰신다면
+]
