@@ -1,0 +1,147 @@
+{
+  "name": "무작위 배치 테스트",
+  "description": "센서 및 액추에이터가 무작위 배치된 비정형 환경 테스트",
+  "hardware": {
+    "layers": 2,
+    "beds_per_layer": 5,
+    "sensors": [
+      {
+        "type": "temperature",
+        "x": 0.6,
+        "y": 0.19
+      },
+      {
+        "type": "humidity",
+        "x": 0.86,
+        "y": 0.49
+      }
+    ],
+    "actuators": [
+      {
+        "type": "led",
+        "x": 0.55,
+        "y": 0.47
+      },
+      {
+        "type": "fan",
+        "x": 0.69,
+        "y": 0.71
+      }
+    ]
+  },
+  "dimensions": {
+    "width": "10m",
+    "length": "10m",
+    "height": "3m"
+  },
+  "plants": [
+    {
+      "type": "tomato",
+      "name": "토마토",
+      "minTemp": 18,
+      "maxTemp": 30,
+      "minHumidity": 50,
+      "maxHumidity": 80,
+      "positions": [
+        {
+          "x": 0.4,
+          "y": 0.47,
+          "layer": 1
+        },
+        {
+          "x": 0.66,
+          "y": 0.41,
+          "layer": 1
+        },
+        {
+          "x": 0.82,
+          "y": 0.51,
+          "layer": 1
+        },
+        {
+          "x": 0.5,
+          "y": 0.34,
+          "layer": 2
+        },
+        {
+          "x": 0.6,
+          "y": 0.81,
+          "layer": 2
+        }
+      ],
+      "growthStage": 70
+    },
+    {
+      "type": "lettuce",
+      "name": "상추",
+      "minTemp": 15,
+      "maxTemp": 25,
+      "minHumidity": 60,
+      "maxHumidity": 85,
+      "positions": [
+        {
+          "x": 0.7,
+          "y": 0.45,
+          "layer": 1
+        },
+        {
+          "x": 0.49,
+          "y": 0.43,
+          "layer": 1
+        },
+        {
+          "x": 0.11,
+          "y": 0.76,
+          "layer": 1
+        },
+        {
+          "x": 0.8,
+          "y": 0.32,
+          "layer": 2
+        },
+        {
+          "x": 0.26,
+          "y": 0.89,
+          "layer": 2
+        }
+      ],
+      "growthStage": 83
+    },
+    {
+      "type": "pepper",
+      "name": "고추",
+      "minTemp": 20,
+      "maxTemp": 32,
+      "minHumidity": 45,
+      "maxHumidity": 75,
+      "positions": [
+        {
+          "x": 0.13,
+          "y": 0.65,
+          "layer": 1
+        },
+        {
+          "x": 0.67,
+          "y": 0.49,
+          "layer": 1
+        },
+        {
+          "x": 0.77,
+          "y": 0.88,
+          "layer": 1
+        },
+        {
+          "x": 0.3,
+          "y": 0.23,
+          "layer": 2
+        },
+        {
+          "x": 0.75,
+          "y": 0.43,
+          "layer": 2
+        }
+      ],
+      "growthStage": 71
+    }
+  ]
+}
