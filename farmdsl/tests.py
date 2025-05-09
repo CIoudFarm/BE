@@ -98,6 +98,16 @@ class CropSearchViewSetTest(APITestCase):
         print("응답:", res.data)
         self.assertEqual(res.status_code, 200)
 
+        # ✅ Patch (부분 수정)
+        patch_data = {
+            "budget": 123456
+        }
+        res = self.client.patch(retrieve_url, data=patch_data, format="json")
+        print("\n✅ [PATCH] PATCH", retrieve_url)
+        print("요청 본문:", patch_data)
+        print("응답:", res.data)
+        self.assertEqual(res.status_code, 200)
+
         # ✅ Delete
         delete_url = reverse("crops-detail", args=[id2])
         res = self.client.delete(delete_url)
@@ -107,7 +117,7 @@ class CropSearchViewSetTest(APITestCase):
 
         time.sleep(1)
 
-        # ✅ Search
+        # ✅ Search: notes 포함된 결과
         search_payload = {"notes": "물"}
         res = self.client.post(search_url, data=search_payload, format="json")
         print("\n✅ [SEARCH] POST", search_url)
@@ -115,9 +125,18 @@ class CropSearchViewSetTest(APITestCase):
         print("응답:", res.data)
         self.assertEqual(res.status_code, 200)
 
+        # ✅ Search: crop_type + notes
         search_payload2 = {"crop_type": "토마토", "notes": "수정됨"}
         res = self.client.post(search_url, data=search_payload2, format="json")
         print("\n✅ [SEARCH] POST", search_url)
         print("요청 본문:", search_payload2)
+        print("응답:", res.data)
+        self.assertEqual(res.status_code, 200)
+
+        # ✅ Search: notes에 유사어 없을 경우 (fallback 확인)
+        search_payload3 = {"notes": "으아아아"}
+        res = self.client.post(search_url, data=search_payload3, format="json")
+        print("\n✅ [SEARCH - fallback test] POST", search_url)
+        print("요청 본문:", search_payload3)
         print("응답:", res.data)
         self.assertEqual(res.status_code, 200)
