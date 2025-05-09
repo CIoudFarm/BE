@@ -45,7 +45,12 @@ def create_crop_index():
                     "analyzer": "korean_nori"
                 },
                 "container": {
-                    "type": "text"
+                    "type": "text",
+                    "fields": {
+                        "keyword": {
+                        "type": "keyword"
+                        }
+                    }
                 }
             }
         }
