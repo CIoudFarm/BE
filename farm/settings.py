@@ -39,11 +39,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'rest_framework',
     "farmdsl",
+    "corsheaders", 
     "makesetting",
     "mypage",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # 반드시 맨 위 또는 CommonMiddleware 위
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -138,8 +141,9 @@ ELASTICSEARCH_DSL = {
     },
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",      # React, Next.js dev server
-    "http://127.0.0.1:3000",      # 다른 로컬호스트 주소
-    "http://localhost:8000",      # 혹시 Django 프론트도 쓰신다면
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",      # React, Next.js dev server
+#     "http://127.0.0.1:3000",      # 다른 로컬호스트 주소
+#     "http://localhost:8000",      # 혹시 Django 프론트도 쓰신다면
+# ]
+CORS_ALLOW_ALL_ORIGINS = True
