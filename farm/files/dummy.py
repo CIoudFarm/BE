@@ -31,10 +31,9 @@ CREATER_NAMES = [
 ]
 
 
-def create_sample_data(instance_deficit=20, container_deficit=20):
-    print("📦 샘플 데이터 생성 시작")
+def create_sample_data():
+    print("📦 farms/files 기반 Instance & Container 10개 생성 시작")
 
-    # 1️⃣ 파일 기반 10개 생성
     for i, (name, filename, description) in enumerate(FILES):
         config_path = CONFIG_DIR / filename
         if not config_path.exists():
@@ -71,46 +70,4 @@ def create_sample_data(instance_deficit=20, container_deficit=20):
             added_at=timezone.now() - timedelta(days=random.randint(0, 10)),
         )
 
-    print("✅ config 파일 기반 10개 생성 완료")
-
-    # # 2️⃣ 부족한 만큼 무작위 생성
-    # for i in range(max(instance_deficit - 10, 0)):
-    #     random_json = {
-    #         "id": str(uuid.uuid4()),
-    #         "name": f"랜덤 설정 {i}",
-    #         "provider": random.choice(["FarmAI", "AgriTech"]),
-    #         "dimensions": {"width": "10m", "length": "10m", "height": "3m"},
-    #         "hardware": {
-    #             "layers": 2,
-    #             "beds_per_layer": 5,
-    #             "sensors": [{"type": "temperature", "x": 0.5, "y": 0.5}],
-    #             "actuators": [{"type": "fan", "x": 0.4, "y": 0.4}],
-    #         },
-    #     }
-
-    #     Instance.objects.create(
-    #         name=f"랜덤 인스턴스 {i+1}",
-    #         type=random.choice(["기본형", "고급형"]),
-    #         start_date=timezone.now().date() - timedelta(days=random.randint(0, 90)),
-    #         status="중지됨",
-    #         region=random.choice(["부산", "대전", "광주"]),
-    #         base_config=json.dumps(random_json).encode("utf-8"),
-    #         base_config_name=f"random_config_{i}.json",
-    #     )
-
-    #     Container.objects.create(
-    #         name=f"랜덤 컨테이너 {i+1}",
-    #         creater=random.choice(CREATER_NAMES),
-    #         scale="5평",
-    #         hit_range="낮음",
-    #         electricity="보통",
-    #         humid=f"{random.randint(40, 80)}%",
-    #         functions=["센서", "LED"],
-    #         setting_file=random_json,
-    #         notes="자동 생성된 테스트 환경",
-    #         stars=round(random.uniform(2.0, 4.5), 1),
-    #         download_count=random.randint(0, 50),
-    #         added_at=timezone.now() - timedelta(days=random.randint(0, 20)),
-    #     )
-
-    # print("✅ 무작위 데이터로 총 20개까지 채움 완료")
+    print("✅ farms/files 기반 데이터 10개 생성 완료")
