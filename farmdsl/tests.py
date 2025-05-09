@@ -28,8 +28,8 @@ class CropSearchViewSetTest(APITestCase):
                 "mappings": {
                     "properties": {
                         "crop_type": {"type": "text"},
-                        "growing_period": {"type": "text"},
-                        "budget": {"type": "text"},
+                        "growing_period": {"type": "integer"},
+                        "budget": {"type": "integer"},
                         "notes": {"type": "text", "analyzer": "korean_nori"},
                     }
                 }
@@ -39,63 +39,85 @@ class CropSearchViewSetTest(APITestCase):
     def tearDown(self):
         self.es.indices.delete(index=self.ES_INDEX)
 
-    def test_crop_index_and_search_post(self):
+    def test_crop_crud_and_search(self):
         index_url = reverse("crops-list")
         search_url = reverse("crops-search")
 
-        # 색인
-        response = self.client.post(index_url, data={
+        # ✅ Create
+        payload1 = {
             "crop_type": "토마토",
             "growing_period": 3,
             "budget": 500000,
             "notes": "물 많이 줘야 함"
-        }, format="json")
-        self.assertEqual(response.status_code, 201)
+        }
+        response1 = self.client.post(index_url, data=payload1, format="json")
+        print("\n✅ [CREATE] POST", index_url)
+        print("요청 본문:", payload1)
+        print("응답:", response1.data)
+        self.assertEqual(response1.status_code, 201)
+        id1 = response1.data["id"]
 
-        response = self.client.post(index_url, data={
-            "crop_type": "토마토",
-            "growing_period": 3,
-            "budget": 500000,
-            "notes": "비료 줘야 함"
-        }, format="json")
-        self.assertEqual(response.status_code, 201)
-
-        response = self.client.post(index_url, data={
+        payload2 = {
             "crop_type": "감자",
             "growing_period": 2,
             "budget": 400000,
-            "notes": "물 조금 줘야 함",
-            "url": "http://localhost:8000",
-            "setting_file": {
-                "name": "John Doe",
-                "age": 30,
-                "city": "New York"
-            },
-        }, format="json")
-        print('으아아', response.data)
-        self.assertEqual(response.status_code, 201)
-        # 색인 반영 대기
+            "notes": "비료 줘야 함"
+        }
+        response2 = self.client.post(index_url, data=payload2, format="json")
+        print("\n✅ [CREATE] POST", index_url)
+        print("요청 본문:", payload2)
+        print("응답:", response2.data)
+        self.assertEqual(response2.status_code, 201)
+        id2 = response2.data["id"]
+
         time.sleep(1)
 
-        print('테스트 결과(생성)')
-        print(index_url)
-        print(response.data)
+        # ✅ List
+        res = self.client.get(index_url)
+        print("\n✅ [LIST] GET", index_url)
+        print("응답:", res.data)
+        self.assertEqual(res.status_code, 200)
 
-        # 검색 요청 (POST /crops/search/)
-        response = self.client.post(search_url, data={
-            "notes": "물"
-        }, format="json")
+        # ✅ Retrieve
+        retrieve_url = reverse("crops-detail", args=[id1])
+        res = self.client.get(retrieve_url)
+        print("\n✅ [RETRIEVE] GET", retrieve_url)
+        print("응답:", res.data)
+        self.assertEqual(res.status_code, 200)
 
-        print('테스트 결과')
-        print(search_url)
-        print(response.data)
+        # ✅ Update
+        update_data = {
+            "crop_type": "토마토",
+            "growing_period": 5,
+            "budget": 600000,
+            "notes": "수정됨"
+        }
+        res = self.client.put(retrieve_url, data=update_data, format="json")
+        print("\n✅ [UPDATE] PUT", retrieve_url)
+        print("요청 본문:", update_data)
+        print("응답:", res.data)
+        self.assertEqual(res.status_code, 200)
 
+        # ✅ Delete
+        delete_url = reverse("crops-detail", args=[id2])
+        res = self.client.delete(delete_url)
+        print("\n✅ [DELETE] DELETE", delete_url)
+        print("응답 상태코드:", res.status_code)
+        self.assertEqual(res.status_code, 204)
 
-        response = self.client.post(search_url, data={
-            "crop_type": "감자",
-            "notes": "물",
-        }, format="json")
+        time.sleep(1)
 
-        print('테스트 결과2')
-        print(search_url)
-        print(response.data)
+        # ✅ Search
+        search_payload = {"notes": "물"}
+        res = self.client.post(search_url, data=search_payload, format="json")
+        print("\n✅ [SEARCH] POST", search_url)
+        print("요청 본문:", search_payload)
+        print("응답:", res.data)
+        self.assertEqual(res.status_code, 200)
+
+        search_payload2 = {"crop_type": "토마토", "notes": "수정됨"}
+        res = self.client.post(search_url, data=search_payload2, format="json")
+        print("\n✅ [SEARCH] POST", search_url)
+        print("요청 본문:", search_payload2)
+        print("응답:", res.data)
+        self.assertEqual(res.status_code, 200)
