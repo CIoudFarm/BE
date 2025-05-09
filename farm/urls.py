@@ -14,5 +14,6 @@ router.register(r'containers', ContainerViewSet)
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
+    path("mypage/", include("mypage.urls")),
 ]
 
