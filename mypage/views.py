@@ -57,3 +57,45 @@ class InstanceFileDownloadView(APIView):
         filename = instance.base_config_name or 'downloaded_file.json'
         response['Content-Disposition'] = f'attachment; filename="{filename}"'
         return response
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.http import FileResponse
+from PIL import Image, ImageEnhance
+import uuid
+import os
+from django.conf import settings
+from io import BytesIO
+
+
+class ColorModifiedPhotoView(APIView):
+    def get(self, request, pk):
+        try:
+            uid = uuid.UUID(str(pk))
+        except ValueError:
+            return Response({"detail": "Invalid UUID"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # UUID 첫 자리로 이미지 선택
+        hex_digit = int(str(uid)[0], 16)
+        image_index = hex_digit % 3 + 1
+        image_path = os.path.join(settings.BASE_DIR, "farms/files", f"photo{image_index}.png")
+
+        if not os.path.exists(image_path):
+            return Response({"detail": f"Image not found: photo{image_index}.png"}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            with Image.open(image_path).convert("RGBA") as img:
+                # UUID 전체 int 값을 기반으로 색상 변화 (색조 강조)
+                factor = (uid.int % 100) / 50  # 범위: 0~2
+                enhancer = ImageEnhance.Color(img)
+                img = enhancer.enhance(factor)
+
+                buffer = BytesIO()
+                img.save(buffer, format="PNG")
+                buffer.seek(0)
+
+                return FileResponse(buffer, content_type="image/png")
+        except Exception as e:
+            return Response({"detail": f"Image processing failed: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
