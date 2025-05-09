@@ -8,24 +8,28 @@
       {
         "type": "temperature",
         "x": 0.66,
-        "y": 0.69
+        "y": 0.69,
+        "layer": 2
       },
       {
         "type": "humidity",
         "x": 0.48,
-        "y": 0.45
+        "y": 0.45,
+        "layer": 2
       }
     ],
     "actuators": [
       {
         "type": "led",
         "x": 0.53,
-        "y": 0.77
+        "y": 0.77,
+        "layer": 1
       },
       {
         "type": "fan",
         "x": 0.31,
-        "y": 0.31
+        "y": 0.31,
+        "layer": 1
       }
     ]
   },
