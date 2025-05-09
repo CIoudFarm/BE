@@ -16,7 +16,6 @@ def create_crop_index():
     except Exception as e:
         print("❌ 인덱스 삭제 실패:", e)
 
-    # ✅ 새 인덱스 생성
     mapping = {
         "settings": {
             "analysis": {
@@ -30,28 +29,17 @@ def create_crop_index():
         },
         "mappings": {
             "properties": {
-                "crop_type": {
-                    "type": "text",
-                    "analyzer": "korean_nori"
-                },
-                "growing_period": {
-                    "type": "integer"
-                },
-                "budget": {
-                    "type": "integer"
-                },
-                "notes": {
-                    "type": "text",
-                    "analyzer": "korean_nori"
-                },
+                "crop_type": {"type": "text", "analyzer": "korean_nori"},
+                "growing_period": {"type": "integer"},
+                "budget": {"type": "integer"},
+                "notes": {"type": "text", "analyzer": "korean_nori"},
                 "container": {
                     "type": "text",
                     "fields": {
-                        "keyword": {
-                        "type": "keyword"
-                        }
+                        "keyword": {"type": "keyword"}
                     }
-                }
+                },
+                "tags": {"type": "keyword"}  # ✅ 문자열 리스트
             }
         }
     }

@@ -1,4 +1,5 @@
 import uuid
+import json
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action, parser_classes
@@ -143,30 +144,46 @@ class CropSearchViewSet(viewsets.ViewSet):
     @parser_classes([MultiPartParser])
     @action(detail=False, methods=["post"], url_path="base-upload")
     def base_upload(self, request):
-        try:
-            container = Container.objects.create(
-                id=uuid.uuid4()
-            )
-        except Container.DoesNotExist:
-            return Response({"detail": "Container not found."}, status=status.HTTP_404_NOT_FOUND)
+        container = Container.objects.create(id=uuid.uuid4())
 
         upload_file: UploadedFile = request.FILES.get("file")
         if not upload_file:
             return Response({"detail": "No file uploaded."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            import json
             content = upload_file.read().decode("utf-8")
             json_data = json.loads(content)
         except Exception as e:
             return Response({"detail": f"Invalid JSON file: {e}"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # ✅ setting_file 업데이트
+        notes = request.data.get("notes", "")
+        try:
+            tags_raw = request.data.get("tags", "[]")
+            tags = json.loads(tags_raw)
+        except json.JSONDecodeError:
+            return Response({"detail": "Invalid tags (must be JSON array string)."}, status=400)
+
         container.setting_file = json_data
+        container.notes = notes
         container.save()
 
-        return Response({"message": "Setting file updated successfully", "setting_file": container.setting_file}, status=status.HTTP_200_OK)
+        try:
+            es.index(index="crops", body={
+                "container": str(container.pk),
+                "notes": notes,
+                "tags": tags
+            })
+            print(f"✅ Elasticsearch 색인 완료: container={container.pk}")
+        except Exception as e:
+            print(f"❌ Elasticsearch 색인 실패: {e}")
 
+        return Response({
+            "message": "Setting file uploaded and indexed",
+            "container_id": str(container.pk),
+            "notes": notes,
+            "tags": tags
+        }, status=200)
+    
     @parser_classes([MultiPartParser])
     @action(detail=True, methods=["post"], url_path="upload")
     def upload(self, request, pk=None):
