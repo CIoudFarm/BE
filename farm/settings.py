@@ -142,11 +142,14 @@ ELASTICSEARCH_DSL = {
     },
 }
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",      # React, Next.js dev server
-#     "http://127.0.0.1:3000",      # 다른 로컬호스트 주소
-#     "http://localhost:8000",      # 혹시 Django 프론트도 쓰신다면
-# ]
-CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "https://fwcs-frontend.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000", 
+    "http://localhost:8000", 
+]
+
+# CORS_ALLOW_ALL_ORIGINS = True
 
 OPENAI_KEY = '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'
