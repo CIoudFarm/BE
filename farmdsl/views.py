@@ -1,22 +1,27 @@
+import uuid
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from elasticsearch import Elasticsearch
 from elasticsearch.exceptions import NotFoundError
 from .serializers import CropSearchSerializer
+from rest_framework.parsers import MultiPartParser
+from container.models import Container
+from django.core.files.uploadedfile import UploadedFile
 
 es = Elasticsearch("http://localhost:9200")
 
 
 class CropSearchViewSet(viewsets.ViewSet):
     index_name = "crops"
+    parser_classes = [MultiPartParser]  # ✅ 파일 업로드를 위해 multipart 지원 추
 
     # 1. Create - 색인
     def create(self, request):
         serializer = CropSearchSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        result = es.index(index=self.index_name, body=serializer.validated_data)
+        result = es.index(index=self.index_name, id=str(uuid.uuid4()), body=serializer.validated_data)
         return Response({"id": result['_id'], "message": "Indexed successfully"}, status=status.HTTP_201_CREATED)
 
     # 2. Retrieve - 단일 문서 조회 (GET /crops/{id}/)
@@ -135,3 +140,27 @@ class CropSearchViewSet(viewsets.ViewSet):
             "count": len(final_hits),
             "results": final_hits
         }, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["post"], url_path="upload")
+    def upload(self, request, pk=None):
+        try:
+            container = Container.objects.get(pk=pk)
+        except Container.DoesNotExist:
+            return Response({"detail": "Container not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        upload_file: UploadedFile = request.FILES.get("file")
+        if not upload_file:
+            return Response({"detail": "No file uploaded."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            import json
+            content = upload_file.read().decode("utf-8")
+            json_data = json.loads(content)
+        except Exception as e:
+            return Response({"detail": f"Invalid JSON file: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # ✅ setting_file 업데이트
+        container.setting_file = json_data
+        container.save()
+
+        return Response({"message": "Setting file updated successfully", "setting_file": container.setting_file}, status=status.HTTP_200_OK)

@@ -34,13 +34,14 @@ class Container(models.Model):
         result = super().save(force_insert, force_update, using, update_fields)
 
         if is_create:
-
-            # ✅ Elasticsearch 색인: container만 포함
             try:
-                es.index(index="crops", body={
-                    "container": str(self.pk),
-                    "notes": self.notes,
-                })
+                es.index(index="crops", 
+                    id=str(self.pk), 
+                    body={
+                        "container": str(self.pk),
+                        "notes": self.notes,
+                    }
+                )
             except Exception as e:
                 print(f"❌ Elasticsearch 색인 실패: {e}")
 
