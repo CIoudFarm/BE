@@ -80,7 +80,7 @@ class ColorModifiedPhotoView(APIView):
         # UUID 첫 자리로 이미지 선택
         hex_digit = int(str(uid)[0], 16)
         image_index = hex_digit % 3 + 1
-        image_path = os.path.join(settings.BASE_DIR, "farms/files", f"photo{image_index}.png")
+        image_path = os.path.join(settings.BASE_DIR, "farm/files", f"photo{image_index}.png")
 
         if not os.path.exists(image_path):
             return Response({"detail": f"Image not found: photo{image_index}.png"}, status=status.HTTP_404_NOT_FOUND)
