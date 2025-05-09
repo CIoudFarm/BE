@@ -10,5 +10,6 @@ router.register(r"crops", CropSearchViewSet, basename="crops")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
+    path("mypage/", include("mypage.urls")),
 ]
 

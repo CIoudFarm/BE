@@ -147,3 +147,6 @@ ELASTICSEARCH_DSL = {
 #     "http://localhost:8000",      # 혹시 Django 프론트도 쓰신다면
 # ]
 CORS_ALLOW_ALL_ORIGINS = True
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
