@@ -29,6 +29,8 @@ class ContainerAPITestCase(APITestCase):
         # ✅ Create
         payload = {
             "scale": "중형",
+            "name": "베이스이미지1",
+            "creater": "제조사1",
             "hit_range": "5-10m",
             "electricity": "220V",
             "humid": "60%",

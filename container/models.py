@@ -12,6 +12,8 @@ class Container(models.Model):
         return ["해당 컨테이너에는 기능 설명이 없어요!"]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  # ✅ UUID 기반 ID
+    name = models.CharField(max_length=100, default='')
+    creater = models.CharField(max_length=100, default='')
     scale = models.CharField(max_length=100)
     hit_range = models.CharField(max_length=100)
     electricity = models.CharField(max_length=100)
